@@ -23,14 +23,6 @@ for upgrade in upgrade_list
         if upgrade.slot == 'Salvaged Astromech'
             upgrade.slot = 'Salvaged Astromech Droid'
 
-        xpac_str = ''
-        if upgrade.name == 'R2-D2 (Crew)'
-            xpac_str = '-swx22'
-        else if upgrade.name == 'Millennium Falcon (TFA)'
-            xpac_str = '-swx57'
-        else if upgrade.name == 'Ghost (Phantom II)'
-            xpac_str = '-swx72'
-
         orig_name = upgrade.name
         upgrade.name = upgrade.name.replace(/\ \(.*\)/, '')
 
@@ -40,7 +32,7 @@ for upgrade in upgrade_list
                 name: upgrade.slot
                 upgrades: {}
             }
-        name_key = $exp.xws.canonicalize(upgrade.name, xpac_str)
+        name_key = if upgrade.canonical_name then upgrade.canonical_name else $exp.xws.canonicalize(upgrade.name)
 
         if name_key of $exp.xws.upgrade_slot2key2obj_dict[slot_key].upgrades
             console.log("# '#{orig_name}' already present as '#{name_key}'")

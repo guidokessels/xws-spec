@@ -32,18 +32,10 @@ for pilot in $exp.basicCardData().pilotsById
                 pilots: {}
             }
 
-        xpac_str = ''
-        if pilot.name == 'Poe Dameron (PS9)'
-            xpac_str = '-swx57'
-        else if pilot.name == 'Han Solo (TFA)'
-            xpac_str = '-swx57'
-        else if pilot.name == 'Chewbacca (TFA)'
-            xpac_str = '-swx57'
-
         orig_name = pilot.name
         pilot.name = pilot.name.replace(/\ \(.*\)/, '')
 
-        name_key = $exp.xws.canonicalize(pilot.name, xpac_str)
+        name_key = if pilot.canonical_name then pilot.canonical_name else $exp.xws.canonicalize(pilot.name)
 
         if name_key of $exp.xws.pilot_faction2ship2pilot2obj_dict[faction_key].ships[ship_key].pilots
             console.log("# '#{orig_name}' already present as '#{name_key}'")
